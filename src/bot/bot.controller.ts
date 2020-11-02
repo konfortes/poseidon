@@ -6,6 +6,8 @@ import { Controller, Post, Body } from '@nestjs/common'
 export class BotController {
   constructor(private readonly service: BotService) {}
 
+  fullName = user => [user.first_name, user.last_name].join(' ')
+
   @Post('update')
   update(@Body() data: UpdateDTO) {
     console.log(data)
@@ -18,10 +20,10 @@ export class BotController {
 
     switch (message.text) {
       case '/subscribe':
-        this.service.subscribe(message.from.id, message.from.username)
+        this.service.subscribe(message.from.id, this.fullName(message.from))
         break
       case '/unsubscribe':
-        this.service.unsubscribe(message.from.id, message.from.username)
+        this.service.unsubscribe(message.from.id, this.fullName(message.from))
         break
       case '/forecast':
         this.service.forecast(message.from.id)
