@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class BotService {
-  subscribe(userId: number, username: string) {
-    console.log(`subscribing user(id: ${userId}, username: ${username})!`)
+  subscribe(userId: number, name: string) {
+    console.log(`subscribing user(id: ${userId}, name: ${name})!`)
   }
-  unsubscribe(userId: number, username: string) {
-    console.log(`unsubscribing user(id: ${userId}, username: ${username})!`)
+  unsubscribe(userId: number, name: string) {
+    console.log(`unsubscribing user(id: ${userId}, name: ${name})!`)
   }
   forecast(userId: number) {
     console.log(`sending forecast to ${userId}`)
