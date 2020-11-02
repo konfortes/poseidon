@@ -8,10 +8,10 @@ export class BotController {
 
   @Post('update')
   update(@Body() data: UpdateDTO) {
-    console.log(data)
+    // console.log(data)
 
     switch (data.message.text) {
-      case 'subscribe':
+      case '/subscribe':
         this.service.subscribe()
         break
 
