@@ -9,10 +9,22 @@ export class BotController {
   @Post('update')
   update(@Body() data: UpdateDTO) {
     // console.log(data)
+    if (!data.message) {
+      console.log('MISSING UPDATE MESSAGE!')
+      return
+    }
 
-    switch (data.message.text) {
+    const message = data.message
+
+    switch (message.text) {
       case '/subscribe':
-        this.service.subscribe()
+        this.service.subscribe(message.from.id, message.from.username)
+        break
+      case '/unsubscribe':
+        this.service.unsubscribe(message.from.id, message.from.username)
+        break
+      case '/forecast':
+        this.service.forecast(message.from.id)
         break
 
       default:
