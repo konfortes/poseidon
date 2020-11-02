@@ -2,9 +2,12 @@
   "name": "open-water-israel",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Ronen Konfortes",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": "14.13.0"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
