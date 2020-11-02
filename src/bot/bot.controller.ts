@@ -8,7 +8,7 @@ export class BotController {
 
   @Post('update')
   update(@Body() data: UpdateDTO) {
-    // console.log(data)
+    console.log(data)
     if (!data.message) {
       console.log('MISSING UPDATE MESSAGE!')
       return
