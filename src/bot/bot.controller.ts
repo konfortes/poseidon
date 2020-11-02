@@ -28,7 +28,7 @@ export class BotController {
         break
 
       default:
-        console.log('UNKNOWN UPDATE COMMAND')
+        console.log(`UNKNOWN UPDATE COMMAND: ${message.text}`)
         break
     }
   }
