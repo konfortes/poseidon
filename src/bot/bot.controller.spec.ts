@@ -1,3 +1,4 @@
+import { CommonModule } from './../common/common.module'
 import { UpdateDTO } from './dto/update.dto'
 import { BotService } from './bot.service'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -26,6 +27,7 @@ describe('BotController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [CommonModule],
       controllers: [BotController],
       providers: [BotService],
     })

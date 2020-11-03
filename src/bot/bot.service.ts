@@ -1,26 +1,31 @@
+import { Logger } from '../common/logger'
 import { UpdateDTO } from './dto/update.dto'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class BotService {
+  SUBSCRIBE = '/subscribe'
+  UNSUBSCRIBE = '/unsubscribe'
+  FORECAST = '/forecast'
+  constructor(private readonly logger: Logger) {}
   handleUpdate(data: UpdateDTO) {
     const message = data.message
 
     const fullName = user => [user.first_name, user.last_name].join(' ')
 
     switch (message.text) {
-      case '/subscribe':
+      case this.SUBSCRIBE:
         this.subscribe(message.from.id, fullName(message.from))
         break
-      case '/unsubscribe':
+      case this.UNSUBSCRIBE:
         this.unsubscribe(message.from.id, fullName(message.from))
         break
-      case '/forecast':
+      case this.FORECAST:
         this.forecast(message.from.id)
         break
 
       default:
-        console.log(`UNKNOWN UPDATE COMMAND: ${message.text}`)
+        this.logger.log(`UNKNOWN UPDATE COMMAND: ${message.text}`)
         break
     }
   }
