@@ -23,7 +23,7 @@ import { WebhookHandler } from './webhook.handler'
       inject: [ConfigService],
     }),
   ],
-  controllers: [BotController],
+  // controllers: [BotController],
   providers: [WebhookHandler, TestBot],
 })
 export class TelegramModule {}
