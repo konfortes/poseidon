@@ -9,10 +9,10 @@ async function bootstrap() {
 
   const telegrafProvider = app.get('TelegrafProvider')
   const configService = app.get(ConfigService)
+
   app.use(
     telegrafProvider.webhookCallback(
-      // configService.get('telegram.webhook.secretPath'),
-      '/bot/update',
+      configService.get('telegram.webhook.secretPath'),
     ),
   )
 
