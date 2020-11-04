@@ -1,6 +1,6 @@
-import { CommonModule } from './../common/common.module'
+import { CommonModule } from '../common/common.module'
 import { UpdateDTO } from './dto/update.dto'
-import { BotService } from './bot.service'
+import { WebhookHandler } from './webhook.handler'
 import { Test, TestingModule } from '@nestjs/testing'
 import { BotController } from './bot.controller'
 
@@ -29,9 +29,9 @@ describe('BotController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [CommonModule],
       controllers: [BotController],
-      providers: [BotService],
+      providers: [WebhookHandler],
     })
-      .overrideProvider(BotService)
+      .overrideProvider(WebhookHandler)
       .useValue(mockBotService)
       .compile()
 

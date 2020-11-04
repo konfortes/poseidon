@@ -1,9 +1,9 @@
 import { Logger } from '../common/logger'
-import { UpdateDTO } from './dto/update.dto'
 import { Injectable } from '@nestjs/common'
+import { UpdateDTO } from './dto/update.dto'
 
 @Injectable()
-export class BotService {
+export class WebhookHandler {
   SUBSCRIBE = '/subscribe'
   UNSUBSCRIBE = '/unsubscribe'
   FORECAST = '/forecast'

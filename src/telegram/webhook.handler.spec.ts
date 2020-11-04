@@ -1,10 +1,10 @@
-import { CommonModule } from './../common/common.module'
+import { CommonModule } from '../common/common.module'
 import { Logger } from '../common/logger'
 import { Test, TestingModule } from '@nestjs/testing'
-import { BotService } from './bot.service'
+import { WebhookHandler } from './webhook.handler'
 
-describe('BotService', () => {
-  let service: BotService
+describe('WebhookHandler', () => {
+  let service: WebhookHandler
 
   const loggerStub = {
     log: (msg: string) => msg,
@@ -13,13 +13,13 @@ describe('BotService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [CommonModule],
-      providers: [BotService],
+      providers: [WebhookHandler],
     })
       // .overrideProvider(Logger)
       // .useClass(loggerStub)
       .compile()
 
-    service = module.get<BotService>(BotService)
+    service = module.get<WebhookHandler>(WebhookHandler)
   })
 
   it('should be defined', () => {

@@ -1,12 +1,12 @@
 import { Logger } from '../common/logger'
-import { BotService } from './bot.service'
-import { UpdateDTO } from './dto/update.dto'
 import { Controller, Post, Body } from '@nestjs/common'
+import { WebhookHandler } from './webhook.handler'
+import { UpdateDTO } from './dto/update.dto'
 
 @Controller('bot')
 export class BotController {
   constructor(
-    private readonly service: BotService,
+    private readonly service: WebhookHandler,
     private readonly logger: Logger,
   ) {}
 
