@@ -8,11 +8,15 @@ import {
   TelegrafProvider,
 } from 'nestjs-telegraf'
 
+import { Markup } from 'telegraf'
+
+import * as puppeteer from 'puppeteer'
+
 @Injectable()
 export class CommandHandler {
   constructor(@InjectBot() private bot: TelegrafProvider) {
     this.bot.use(async (ctx, next) => {
-      ctx.foo = 123
+      ctx.reply('', Markup.removeKeyboard().extra())
       await next()
     })
   }
@@ -21,6 +25,7 @@ export class CommandHandler {
   UNSUBSCRIBE = 'unsubscribe'
   FORECAST = 'forecast'
   RATE = 'rate'
+  MSW_URL = 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'
 
   supportedCommands = [
     this.SUBSCRIBE,
@@ -48,12 +53,40 @@ export class CommandHandler {
   @Command('unsubscribe')
   unsubscribe(ctx: Context) {
     ctx.reply('you are now unsubscribed')
-    ctx.reply
   }
 
   @Command('forecast')
-  forecast(ctx: Context) {
-    ctx.reply("here is tomorrow's forecast")
+  async forecast(ctx: Context) {
+    // TODO: cache
+    // TODO: move to another service
+    console.log('Starting...')
+    const browser = await puppeteer.launch({
+      // headless: false,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+      ],
+    })
+    try {
+      const page = await browser.newPage()
+      page.setViewport({ width: 1400, height: 700, deviceScaleFactor: 2 })
+
+      await page.goto('https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/')
+      await page.waitForSelector('#msw-js-fc', {
+        timeout: 10000,
+      })
+
+      const element = await page.$(
+        '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)',
+      )
+      const screenshotBuffer = await element.screenshot()
+      await ctx.replyWithPhoto({ source: screenshotBuffer })
+    } catch (ex) {
+      console.error(ex)
+    } finally {
+      await browser.close()
+    }
   }
 
   @Command('rate')
@@ -69,14 +102,15 @@ export class CommandHandler {
     return {
       keyboard: [
         [
-          { text: '1', request_location: true },
-          { text: '2', request_location: true },
-          { text: '3', request_location: true },
-          { text: '4', request_location: true },
-          { text: '5', request_location: true },
+          { text: '1' },
+          { text: '2' },
+          { text: '3' },
+          { text: '4' },
+          { text: '5' },
         ],
       ],
-      resizeKeyboard: true,
+      one_time_keyboard: true,
+      // resizeKeyboard: true,
     }
   }
 }
