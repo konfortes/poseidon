@@ -2,10 +2,21 @@
 
 ## Telegram Bot
 
+### Run
+
+`BOT_TOKEN` env var must be provided when running
+
 ### Webhook Subscribe
 
+The app is subscribing itself on startup.  
+It should be provided with 2 env vars:
+
+- `WEBHOOK_DOMAIN`=my.domain.com (use ngrok in dev)
+- `SECRET_WEBHOOK_PATH`=/zR23Q54Ho26q
+
+### Webhook Info
 ```bash
-https://api.telegram.org/botxxxxxxxxxxxxxxx/setWebhook?url=https://open-water-israel.herokuapp.com/bot/update
+https://api.telegram.org/botxxxxxxxxxxxxxxx/getWebhookInfo
 ```
 
 
