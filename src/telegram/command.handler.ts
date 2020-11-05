@@ -59,7 +59,6 @@ export class CommandHandler {
   async forecast(ctx: Context) {
     // TODO: cache
     // TODO: move to another service
-    console.log('Starting...')
     const browser = await puppeteer.launch({
       // headless: false,
       args: [
