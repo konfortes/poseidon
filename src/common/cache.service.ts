@@ -22,6 +22,7 @@ export class CacheService {
     }
 
     const computed = await fn()
+
     const newEntry: CacheEntry = {
       value: computed,
       createdAt: new Date(),
@@ -34,9 +35,9 @@ export class CacheService {
   }
 
   private shouldInvalidate(entry: CacheEntry) {
-    const now = new Date().getTime()
-    const withTtl = entry.createdAt.getTime() + entry.ttl
+    const currentTime = new Date().getTime()
+    const entryTime = entry.createdAt.getTime()
 
-    return withTtl < now
+    return entryTime + entry.ttl * 1000 < currentTime
   }
 }

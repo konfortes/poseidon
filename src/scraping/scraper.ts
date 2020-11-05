@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import * as puppeteer from 'puppeteer'
-import { Logger } from 'src/common/logger'
+import { Logger } from '../common/logger'
 
 @Injectable()
 export class Scraper {

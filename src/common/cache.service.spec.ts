@@ -18,7 +18,7 @@ describe('CachingService', () => {
 
   describe('fetch', () => {
     it('returns the cached value', async () => {
-      const mockFn = jest.fn(() => 'x')
+      const mockFn = jest.fn(() => Promise.resolve('x'))
 
       await cacheService.fetch('key', mockFn, 10)
       await cacheService.fetch('key', mockFn, 10)
