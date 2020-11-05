@@ -10,12 +10,14 @@ import {
 } from 'nestjs-telegraf'
 
 import { Markup } from 'telegraf'
+import { CacheService } from 'src/common/cache.service'
 
 @Injectable()
 export class CommandHandler {
   constructor(
     @InjectBot() private bot: TelegrafProvider,
     private readonly scraper: Scraper,
+    private readonly cacheService: CacheService,
   ) {
     this.bot.use(async (ctx, next) => {
       ctx.reply('', Markup.removeKeyboard().extra())
@@ -28,6 +30,8 @@ export class CommandHandler {
   FORECAST = 'forecast'
   RATE = 'rate'
   MSW_URL = 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'
+  FORECAST_SELECTOR =
+    '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)'
 
   supportedCommands = [
     this.SUBSCRIBE,
@@ -62,7 +66,7 @@ export class CommandHandler {
     const screenshotBuffer = await this.scraper.takeScreenshot(
       this.MSW_URL,
       '#msw-js-fc',
-      '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)',
+      this.FORECAST_SELECTOR,
     )
     await ctx.replyWithPhoto({
       source: screenshotBuffer,
@@ -78,7 +82,7 @@ export class CommandHandler {
     ctx.reply('stars rate', keyboardMarkup)
   }
 
-  rateKeyboard() {
+  private rateKeyboard() {
     return {
       keyboard: [
         [

@@ -3,6 +3,7 @@ import { Module, Global } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { Logger } from './logger'
 import config from './config'
+import { CacheService } from './cache.service'
 
 @Global()
 @Module({
@@ -13,7 +14,7 @@ import config from './config'
     }),
   ],
   controllers: [HealthController],
-  providers: [Logger],
-  exports: [Logger],
+  providers: [Logger, CacheService],
+  exports: [Logger, CacheService],
 })
 export class CommonModule {}
