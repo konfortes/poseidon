@@ -9,8 +9,7 @@ export class Scraper {
     url: string,
     waitForSelector: string,
     elementSelector: string,
-  ): Promise<string> {
-    // TODO: cache
+  ): Promise<Buffer> {
     const browser = await puppeteer.launch({
       // headless: false,
       args: [
@@ -30,7 +29,7 @@ export class Scraper {
 
       const element = await page.$(elementSelector)
 
-      return await element.screenshot()
+      return await element.screenshot({ encoding: 'binary' })
     } catch (ex) {
       this.logger.error(ex)
     } finally {

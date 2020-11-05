@@ -12,7 +12,7 @@ export class CacheService {
 
   async fetch(
     key: string,
-    fn: () => string,
+    fn: () => Promise<any>,
     ttl: number = 5 * 60,
   ): Promise<string> {
     const fromCache = this.store.get(key)

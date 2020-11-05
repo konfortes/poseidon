@@ -63,13 +63,21 @@ export class CommandHandler {
 
   @Command('forecast')
   async forecast(ctx: Context) {
-    const screenshotBuffer = await this.scraper.takeScreenshot(
-      this.MSW_URL,
-      '#msw-js-fc',
-      this.FORECAST_SELECTOR,
+    const getScreenshot = async () => {
+      return await this.scraper.takeScreenshot(
+        this.MSW_URL,
+        '#msw-js-fc',
+        this.FORECAST_SELECTOR,
+      )
+    }
+
+    const screenshotBuffer = await this.cacheService.fetch(
+      'forecast',
+      getScreenshot,
+      60 * 60,
     )
     await ctx.replyWithPhoto({
-      source: screenshotBuffer,
+      source: Buffer.from(screenshotBuffer),
     })
   }
 
