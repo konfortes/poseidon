@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TelegrafModule } from 'nestjs-telegraf/dist/telegraf.module'
 import { CommandHandler } from './command.handler'
-import { WebhookHandler } from './webhook.handler'
 
 @Module({
   imports: [
@@ -19,6 +18,6 @@ import { WebhookHandler } from './webhook.handler'
       inject: [ConfigService],
     }),
   ],
-  providers: [WebhookHandler, CommandHandler],
+  providers: [CommandHandler],
 })
 export class TelegramModule {}
