@@ -1,3 +1,4 @@
+import { Scraper } from './../scraping/scraper'
 import { Injectable } from '@nestjs/common'
 import {
   Help,
@@ -10,11 +11,12 @@ import {
 
 import { Markup } from 'telegraf'
 
-import * as puppeteer from 'puppeteer'
-
 @Injectable()
 export class CommandHandler {
-  constructor(@InjectBot() private bot: TelegrafProvider) {
+  constructor(
+    @InjectBot() private bot: TelegrafProvider,
+    private readonly scraper: Scraper,
+  ) {
     this.bot.use(async (ctx, next) => {
       ctx.reply('', Markup.removeKeyboard().extra())
       await next()
@@ -57,35 +59,14 @@ export class CommandHandler {
 
   @Command('forecast')
   async forecast(ctx: Context) {
-    // TODO: cache
-    // TODO: move to another service
-    const browser = await puppeteer.launch({
-      // headless: false,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-      ],
+    const screenshotBuffer = await this.scraper.takeScreenshot(
+      this.MSW_URL,
+      '#msw-js-fc',
+      '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)',
+    )
+    await ctx.replyWithPhoto({
+      source: screenshotBuffer,
     })
-    try {
-      const page = await browser.newPage()
-      page.setViewport({ width: 1400, height: 700, deviceScaleFactor: 2 })
-
-      await page.goto('https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/')
-      await page.waitForSelector('#msw-js-fc', {
-        timeout: 10000,
-      })
-
-      const element = await page.$(
-        '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)',
-      )
-      const screenshotBuffer = await element.screenshot()
-      await ctx.replyWithPhoto({ source: screenshotBuffer })
-    } catch (ex) {
-      console.error(ex)
-    } finally {
-      await browser.close()
-    }
   }
 
   @Command('rate')

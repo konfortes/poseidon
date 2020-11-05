@@ -1,3 +1,4 @@
+import { ScrapingModule } from './../scraping/scraping.module'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TelegrafModule } from 'nestjs-telegraf/dist/telegraf.module'
@@ -11,12 +12,13 @@ import { CommandHandler } from './command.handler'
         launchOptions: {
           webhook: {
             domain: config.get<string>('telegram.webhook.domain'),
-            hookPath: config.get('telegram.webhook.secretPath'),
+            hookPath: config.get<string>('telegram.webhook.secretPath'),
           },
         },
       }),
       inject: [ConfigService],
     }),
+    ScrapingModule,
   ],
   providers: [CommandHandler],
 })
