@@ -1,3 +1,4 @@
+import { DataModule } from './../data/data.module'
 import { CommandHandler } from './command.handler'
 import { ScrapingModule } from './../scraping/scraping.module'
 import { Module } from '@nestjs/common'
@@ -20,6 +21,7 @@ import { CommandReceiver } from './command.receiver'
       inject: [ConfigService],
     }),
     ScrapingModule,
+    DataModule,
   ],
   providers: [CommandReceiver, CommandHandler],
 })

@@ -1,3 +1,4 @@
+import { UserEntity } from './entities/user.entity'
 import { Logger } from './../common/logger'
 import { CommandHandler } from './command.handler'
 import { Injectable } from '@nestjs/common'
@@ -49,13 +50,19 @@ export class CommandReceiver {
   }
 
   @Command('subscribe')
-  subscribe(ctx: Context) {
-    ctx.reply('you are now subscribed')
+  async subscribe(ctx: Context) {
+    const user = UserEntity.fromTelegramUser(ctx.from)
+    await this.commandHandler.subscribe(user)
+    ctx.reply(
+      'you are now subscribed to the daily forecast! to unsubscribe please send /unsubscribe',
+    )
   }
 
   @Command('unsubscribe')
-  unsubscribe(ctx: Context) {
-    ctx.reply('you are now unsubscribed')
+  async unsubscribe(ctx: Context) {
+    const user = UserEntity.fromTelegramUser(ctx.from)
+    await this.commandHandler.unsubscribe(user)
+    ctx.reply('you are now unsubscribed from the daily forecast')
   }
 
   @Command('forecast')
