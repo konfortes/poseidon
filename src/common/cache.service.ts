@@ -8,7 +8,7 @@ interface CacheEntry {
 
 @Injectable()
 export class CacheService {
-  private store: Map<string, CacheEntry> = new Map<string, CacheEntry>()
+  private store = new Map<string, CacheEntry>()
 
   async fetch(
     key: string,

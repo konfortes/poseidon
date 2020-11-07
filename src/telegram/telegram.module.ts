@@ -1,8 +1,9 @@
+import { CommandHandler } from './command.handler'
 import { ScrapingModule } from './../scraping/scraping.module'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TelegrafModule } from 'nestjs-telegraf/dist/telegraf.module'
-import { CommandHandler } from './command.handler'
+import { CommandReceiver } from './command.receiver'
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { CommandHandler } from './command.handler'
     }),
     ScrapingModule,
   ],
-  providers: [CommandHandler],
+  providers: [CommandReceiver, CommandHandler],
 })
 export class TelegramModule {}
