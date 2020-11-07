@@ -1,6 +1,8 @@
+import { RatingsStore } from './ratings.store'
 import { ConfigService } from '@nestjs/config'
 import { Module } from '@nestjs/common'
 import { KnexModule } from 'nestjs-knex'
+import { UsersStore } from './users.store'
 
 @Module({
   imports: [
@@ -15,5 +17,7 @@ import { KnexModule } from 'nestjs-knex'
       }),
     }),
   ],
+  providers: [UsersStore, RatingsStore],
+  exports: [UsersStore, RatingsStore],
 })
 export class DataModule {}

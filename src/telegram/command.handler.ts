@@ -1,8 +1,9 @@
+import { UsersStore } from './../data/users.store'
+import { RatingsStore } from './../data/ratings.store'
 import { UserEntity } from './entities/user.entity'
 import { Injectable } from '@nestjs/common'
 import { CacheService } from '..//common/cache.service'
 import { Scraper } from '../scraping/scraper'
-import { InjectKnex, Knex } from 'nestjs-knex'
 
 @Injectable()
 export class CommandHandler {
@@ -12,7 +13,8 @@ export class CommandHandler {
   constructor(
     private readonly scraper: Scraper,
     private readonly cacheService: CacheService,
-    @InjectKnex() private readonly knex: Knex,
+    private readonly usersStore: UsersStore,
+    private readonly ratingsStore: RatingsStore,
   ) {}
 
   async forecast(): Promise<string> {
@@ -29,48 +31,39 @@ export class CommandHandler {
   }
 
   async subscribe(user: UserEntity): Promise<void> {
-    const existingUser = await this.knex<UserEntity>('users')
-      .where('external_id', user.external_id)
-      .first()
+    const existingUser = this.usersStore.getByExternalId(user.external_id)
 
     if (!existingUser) {
       user.subscribed = true
-      await this.knex('users')
-        .insert(user)
-        .returning('id')
+      await this.usersStore.insert(user)
+
       return
     }
 
-    await this.knex('users')
-      .where('external_id', existingUser.external_id)
-      .update({ subscribed: true })
+    await this.usersStore.updateSubscription(
+      { external_id: user.external_id },
+      true,
+    )
 
     return
   }
   async unsubscribe(user: UserEntity): Promise<void> {
-    await this.knex('users')
-      .where('external_id', user.external_id)
-      .update({ subscribed: false })
+    await this.usersStore.updateSubscription(
+      { external_id: user.external_id },
+      false,
+    )
   }
 
   async rating(user: UserEntity, rating: number): Promise<void> {
-    const existingUser = await this.knex<UserEntity>('users')
-      .where('external_id', user.external_id)
-      .first()
+    const existingUser = await this.usersStore.getByExternalId(user.external_id)
 
     let userId
     if (existingUser) {
       userId = existingUser.id
     } else {
-      userId = await this.knex('users')
-        .insert(user)
-        .returning('id')[0]
+      userId = await this.usersStore.insert(user)
     }
 
-    await this.knex('ratings').insert({
-      user_id: userId,
-      rating,
-      created_at: new Date(),
-    })
+    await this.ratingsStore.insert(userId, rating)
   }
 }
