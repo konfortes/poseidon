@@ -39,7 +39,7 @@ export class CommandReceiver {
 
   @Hears(/^[a-zA-Z0-9].*/)
   hears(ctx: Context) {
-    const supported = this.supportedCommands.map(c => '/' + c).join(',')
+    const supported = this.supportedCommands.map(c => '/' + c.command).join(',')
     ctx.reply(`I only support ${supported}`)
   }
 
