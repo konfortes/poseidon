@@ -7,8 +7,6 @@ import { TelegrafModule } from 'nestjs-telegraf/dist/telegraf.module'
 import { CommandReceiver } from './command.receiver'
 import { InjectBot, TelegrafProvider } from 'nestjs-telegraf'
 import { OnApplicationBootstrap } from '@nestjs/common/interfaces/hooks/on-application-bootstrap.interface'
-import { ScheduleModule } from '@nestjs/schedule'
-import { ScheduleTest } from './schedule-test';
 
 @Module({
   imports: [
@@ -26,9 +24,8 @@ import { ScheduleTest } from './schedule-test';
     }),
     ScrapingModule,
     DataModule,
-    ScheduleModule.forRoot(),
   ],
-  providers: [CommandReceiver, CommandHandler, ScheduleTest],
+  providers: [CommandReceiver, CommandHandler],
 })
 export class TelegramModule implements OnApplicationBootstrap {
   constructor(
