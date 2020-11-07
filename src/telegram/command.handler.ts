@@ -48,4 +48,6 @@ export class CommandHandler {
       .where('external_id', user.external_id)
       .update({ subscribed: false })
   }
+
+  async rating(externalUserId: number, rate: number): Promise<void> {}
 }

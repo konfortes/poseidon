@@ -3,14 +3,17 @@ import { Logger } from './../common/logger'
 import { CommandHandler } from './command.handler'
 import { Injectable } from '@nestjs/common'
 import {
+  Action,
   Help,
   Hears,
+  Start,
   Context,
   Command,
   InjectBot,
   TelegrafProvider,
 } from 'nestjs-telegraf'
 import { Markup } from 'telegraf'
+import { InlineKeyboardButton, InlineKeyboardMarkup } from 'telegram-typings'
 
 @Injectable()
 export class CommandReceiver {
@@ -31,6 +34,11 @@ export class CommandReceiver {
     { command: 'forecast', description: "Get tomorrow's forecast" },
     { command: 'rate', description: 'Rate current sea' },
   ]
+
+  @Start()
+  start(ctx: Context) {
+    ctx.reply('Welcome!')
+  }
 
   @Help()
   help(ctx: Context) {
@@ -74,22 +82,31 @@ export class CommandReceiver {
 
   @Command('rate')
   rate(ctx: Context) {
-    ctx.reply('stars rate', this.rateKeyboard)
+    ctx.reply(
+      'How would you rate sea condition for swimming?',
+      this.rateKeyboard(),
+    )
   }
 
-  private rateKeyboard = {
-    reply_markup: {
-      keyboard: [
-        [
-          { text: '1' },
-          { text: '2' },
-          { text: '3' },
-          { text: '4' },
-          { text: '5' },
-        ],
-      ],
-    },
-    one_time_keyboard: true,
-    resizeKeyboard: true,
+  @Action(/rate[1-4]/)
+  async rateAction(ctx: Context) {
+    const ratingUser = ctx.update.callback_query.from
+    const reply = ctx.update.callback_query.data
+    const rate = parseInt(reply.charAt(4))
+
+    await this.commandHandler.rating(ratingUser.id, rate)
+
+    ctx.editMessageText('Got your rating, Thanks!')
+  }
+
+  private rateKeyboard() {
+    const buttons = [
+      ['🥇', 'rate1'],
+      ['🥈', 'rate2'],
+      ['🥉', 'rate3'],
+      ['💩', 'rate4'],
+    ].map(button => Markup.callbackButton(button[0], button[1]))
+
+    return Markup.inlineKeyboard(buttons).extra()
   }
 }
