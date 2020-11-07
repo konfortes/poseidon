@@ -24,16 +24,16 @@ import { CreateTableBuilder } from 'knex'
 export class DataModule implements OnApplicationBootstrap {
   constructor(@InjectKnex() private readonly knex: Knex) {}
   async onApplicationBootstrap() {
-    const exist = await this.knex.schema.hasTable('users')
-    if (!exist) {
-      await this.knex.schema.createTable('users', (t: CreateTableBuilder) => {
-        t.integer('external_id')
-        t.string('first_name')
-        t.string('last_name')
-        t.string('username')
-        t.boolean('subscribed')
-        t.dateTime('created_at')
-      })
-    }
+    // const exist = await this.knex.schema.hasTable('users')
+    // if (!exist) {
+    //   await this.knex.schema.createTable('users', (t: CreateTableBuilder) => {
+    //     t.integer('external_id')
+    //     t.string('first_name')
+    //     t.string('last_name')
+    //     t.string('username')
+    //     t.boolean('subscribed')
+    //     t.dateTime('created_at')
+    //   })
+    // }
   }
 }
