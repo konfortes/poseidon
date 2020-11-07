@@ -34,7 +34,11 @@ export class CommandHandler {
       .first()
 
     if (!existingUser) {
-      return await this.knex('users').insert(user)
+      user.subscribed = true
+      await this.knex('users')
+        .insert(user)
+        .returning('id')
+      return
     }
 
     await this.knex('users')
@@ -49,5 +53,24 @@ export class CommandHandler {
       .update({ subscribed: false })
   }
 
-  async rating(externalUserId: number, rate: number): Promise<void> {}
+  async rating(user: UserEntity, rating: number): Promise<void> {
+    const existingUser = await this.knex<UserEntity>('users')
+      .where('external_id', user.external_id)
+      .first()
+
+    let userId
+    if (existingUser) {
+      userId = existingUser.id
+    } else {
+      userId = await this.knex('users')
+        .insert(user)
+        .returning('id')[0]
+    }
+
+    await this.knex('ratings').insert({
+      user_id: userId,
+      rating,
+      created_at: new Date(),
+    })
+  }
 }

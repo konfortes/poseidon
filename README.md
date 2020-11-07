@@ -5,7 +5,7 @@
 ### New Migration
 
 ```bash
-node_modules/.bin/knex  migrate:make --migrations-directory ./migrations -x ts create_users_table
+node_modules/.bin/knex  migrate:make --migrations-directory ./migrations create_users_table
 ```
 
 ## Telegram Bot

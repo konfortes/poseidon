@@ -13,7 +13,6 @@ import {
   TelegrafProvider,
 } from 'nestjs-telegraf'
 import { Markup } from 'telegraf'
-import { InlineKeyboardButton, InlineKeyboardMarkup } from 'telegram-typings'
 
 @Injectable()
 export class CommandReceiver {
@@ -55,7 +54,7 @@ export class CommandReceiver {
   async subscribe(ctx: Context) {
     const user = UserEntity.fromTelegramUser(ctx.from)
     await this.commandHandler.subscribe(user)
-    ctx.reply(
+    await ctx.reply(
       'you are now subscribed to the daily forecast! to unsubscribe please send /unsubscribe',
     )
   }
@@ -64,7 +63,7 @@ export class CommandReceiver {
   async unsubscribe(ctx: Context) {
     const user = UserEntity.fromTelegramUser(ctx.from)
     await this.commandHandler.unsubscribe(user)
-    ctx.reply('you are now unsubscribed from the daily forecast')
+    await ctx.reply('you are now unsubscribed from the daily forecast')
   }
 
   @Command('forecast')
@@ -81,8 +80,8 @@ export class CommandReceiver {
   }
 
   @Command('rate')
-  rate(ctx: Context) {
-    ctx.reply(
+  async rate(ctx: Context) {
+    await ctx.reply(
       'How would you rate sea condition for swimming?',
       this.rateKeyboard(),
     )
@@ -90,13 +89,13 @@ export class CommandReceiver {
 
   @Action(/rate[1-4]/)
   async rateAction(ctx: Context) {
-    const ratingUser = ctx.update.callback_query.from
+    const user = UserEntity.fromTelegramUser(ctx.from)
     const reply = ctx.update.callback_query.data
     const rate = parseInt(reply.charAt(4))
 
-    await this.commandHandler.rating(ratingUser.id, rate)
+    await this.commandHandler.rating(user, rate)
 
-    ctx.editMessageText('Got your rating, Thanks!')
+    await ctx.editMessageText('Got your rating, Thanks!')
   }
 
   private rateKeyboard() {

@@ -2,20 +2,21 @@ import { User } from 'telegram-typings'
 
 export class UserEntity {
   constructor(
-    id: number,
+    externalId: number,
     first: string,
     last: string,
     username: string,
-    subscribed = true,
+    subscribed = false,
     createdAt: Date = new Date(),
   ) {
-    this.external_id = id
+    this.external_id = externalId
     this.first_name = first
     this.last_name = last
     this.username = username
     this.subscribed = subscribed
     this.created_at = createdAt
   }
+  id: number
   external_id: number
   first_name: string
   last_name?: string
