@@ -5,6 +5,8 @@ import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TelegrafModule } from 'nestjs-telegraf/dist/telegraf.module'
 import { CommandReceiver } from './command.receiver'
+import { InjectBot, TelegrafProvider } from 'nestjs-telegraf'
+import { OnApplicationBootstrap } from '@nestjs/common/interfaces/hooks/on-application-bootstrap.interface'
 
 @Module({
   imports: [
@@ -25,4 +27,12 @@ import { CommandReceiver } from './command.receiver'
   ],
   providers: [CommandReceiver, CommandHandler],
 })
-export class TelegramModule {}
+export class TelegramModule implements OnApplicationBootstrap {
+  constructor(
+    private readonly receiver: CommandReceiver,
+    @InjectBot() private bot: TelegrafProvider,
+  ) {}
+  async onApplicationBootstrap() {
+    await this.bot.telegram.setMyCommands(this.receiver.supportedCommands)
+  }
+}

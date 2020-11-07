@@ -25,17 +25,11 @@ export class CommandReceiver {
     })
   }
 
-  SUBSCRIBE = 'subscribe'
-  UNSUBSCRIBE = 'unsubscribe'
-  FORECAST = 'forecast'
-  RATE = 'rate'
-
-  // TODO: get supported commands from getMyCommands
   supportedCommands = [
-    this.SUBSCRIBE,
-    this.UNSUBSCRIBE,
-    this.FORECAST,
-    this.RATE,
+    { command: 'subscribe', description: 'Subscribe to daily forecast' },
+    { command: 'unsubscribe', description: 'Unsubscribe from daily forecast' },
+    { command: 'forecast', description: "Get tomorrow's forecast" },
+    { command: 'rate', description: 'Rate current sea' },
   ]
 
   @Help()
@@ -80,6 +74,22 @@ export class CommandReceiver {
 
   @Command('rate')
   rate(ctx: Context) {
-    ctx.reply('stars rate', this.commandHandler.rateKeyboard())
+    ctx.reply('stars rate', this.rateKeyboard)
+  }
+
+  private rateKeyboard = {
+    reply_markup: {
+      keyboard: [
+        [
+          { text: '1' },
+          { text: '2' },
+          { text: '3' },
+          { text: '4' },
+          { text: '5' },
+        ],
+      ],
+    },
+    one_time_keyboard: true,
+    resizeKeyboard: true,
   }
 }

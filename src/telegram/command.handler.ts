@@ -48,23 +48,4 @@ export class CommandHandler {
       .where('external_id', user.external_id)
       .update({ subscribed: false })
   }
-
-  rateKeyboard() {
-    // TODO: memoize
-    return {
-      reply_markup: {
-        keyboard: [
-          [
-            { text: '1' },
-            { text: '2' },
-            { text: '3' },
-            { text: '4' },
-            { text: '5' },
-          ],
-        ],
-      },
-      one_time_keyboard: true,
-      resizeKeyboard: true,
-    }
-  }
 }
