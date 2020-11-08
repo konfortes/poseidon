@@ -33,4 +33,10 @@ export class UsersStore {
       .where(where)
       .update({ subscribed: subscription })
   }
+
+  async getSubscribedUserExternalIds(): Promise<number[]> {
+    return await this.knex('users')
+      .where({ subscribed: true })
+      .pluck('external_id')
+  }
 }

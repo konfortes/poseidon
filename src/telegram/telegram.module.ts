@@ -26,6 +26,7 @@ import { OnApplicationBootstrap } from '@nestjs/common/interfaces/hooks/on-appli
     DataModule,
   ],
   providers: [CommandReceiver, CommandHandler],
+  exports: [CommandHandler],
 })
 export class TelegramModule implements OnApplicationBootstrap {
   constructor(
