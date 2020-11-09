@@ -1,8 +1,8 @@
 import { CommandHandler } from './../telegram/command.handler'
 import { Controller, Post } from '@nestjs/common'
 import { InjectBot, TelegrafProvider } from 'nestjs-telegraf'
-import { Logger } from 'src/common/logger'
-import { UsersStore } from 'src/data/users.store'
+// import { Logger } from 'src/common/logger'
+import { UsersStore } from '../data/users.store'
 
 @Controller('distribution')
 export class DistributionController {

@@ -1,3 +1,5 @@
+import { CommonModule } from './../common/common.module'
+import { DataModule } from './data.module'
 import { Test, TestingModule } from '@nestjs/testing'
 import { UsersStore } from './users.store'
 
@@ -6,6 +8,7 @@ describe('UsersStore', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [CommonModule, DataModule],
       providers: [UsersStore],
     }).compile()
 
