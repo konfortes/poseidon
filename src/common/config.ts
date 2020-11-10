@@ -1,5 +1,6 @@
 export default () => ({
   port: parseInt(process.env.PORT, 10) || 3000,
+  apiToken: process.env.API_TOKEN,
   db: {
     provider: 'pg',
     connectionString: process.env.DATABASE_URL,
