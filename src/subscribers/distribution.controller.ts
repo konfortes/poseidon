@@ -20,7 +20,6 @@ export class DistributionController {
   async send(@Req() request: Request): Promise<void> {
     // TODO: move to middleware
     const authHeader = request.headers['authorization']
-    this.logger.log(`got this header: ${authHeader}`)
 
     const apiToken = this.config.get<string>('apiToken')
     if (authHeader != `Basic ${apiToken}`) {
