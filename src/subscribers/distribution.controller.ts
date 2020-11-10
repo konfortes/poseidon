@@ -19,12 +19,13 @@ export class DistributionController {
   @Post()
   async send(@Req() request: Request): Promise<void> {
     // TODO: move to middleware
-    const authHeader = request.headers['Authorization']
+    const authHeader = request.headers['authorization']
     this.logger.log(`got this header: ${authHeader}`)
 
-    // if (authHeader != this.config.get<string>('apiToken')) {
-    //   throw new UnauthorizedException()
-    // }
+    const apiToken = this.config.get<string>('apiToken')
+    if (authHeader != `Basic ${apiToken}`) {
+      throw new UnauthorizedException()
+    }
 
     try {
       const forecastImageBuffer = await this.commandHandler.forecast()
