@@ -8,8 +8,11 @@ import { Scraper } from '../scraping/scraper'
 @Injectable()
 export class CommandHandler {
   MSW_URL = 'https://magicseaweed.com/Hazuk-Beach-Surf-Report/3659/'
-  FORECAST_SELECTOR =
+  FORECAST_SELECTOR_TODAY =
     '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)'
+  FORECAST_SELECTOR_TOMORROW =
+    '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)'
+
   constructor(
     private readonly scraper: Scraper,
     private readonly cacheService: CacheService,
@@ -22,7 +25,7 @@ export class CommandHandler {
       return await this.scraper.takeScreenshot(
         this.MSW_URL,
         '#msw-js-fc',
-        this.FORECAST_SELECTOR,
+        this.scrapingSelector(),
         { name: 'MSW_unitgroup', value: 'eu', domain: '.magicseaweed.com' },
       )
     }
@@ -65,5 +68,13 @@ export class CommandHandler {
     }
 
     await this.ratingsStore.insert(userId, rating)
+  }
+
+  private scrapingSelector(): string {
+    const now = new Date()
+
+    return now.getHours() > 12
+      ? this.FORECAST_SELECTOR_TOMORROW
+      : this.FORECAST_SELECTOR_TODAY
   }
 }
