@@ -11,7 +11,7 @@ export class CommandHandler {
   FORECAST_SELECTOR_TODAY =
     '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)'
   FORECAST_SELECTOR_TOMORROW =
-    '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(2)'
+    '#msw-js-fc > div.table-responsive-xs > table > tbody:nth-child(3)'
 
   constructor(
     private readonly scraper: Scraper,
@@ -72,7 +72,6 @@ export class CommandHandler {
 
   private scrapingSelector(): string {
     const now = new Date()
-    console.log(`#scrapingSelector now.getHours(): ${now.getHours()}`)
 
     return now.getHours() > 12
       ? this.FORECAST_SELECTOR_TOMORROW
