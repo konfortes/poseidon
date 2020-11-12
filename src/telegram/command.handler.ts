@@ -72,6 +72,7 @@ export class CommandHandler {
 
   private scrapingSelector(): string {
     const now = new Date()
+    console.log(`#scrapingSelector now.getHours(): ${now.getHours()}`)
 
     return now.getHours() > 12
       ? this.FORECAST_SELECTOR_TOMORROW
