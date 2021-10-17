@@ -1,4 +1,6 @@
-# open-water-israel
+# Poseidon
+
+A telegram bot to reveal sea and waves information.
 
 ## Knex
 
@@ -16,17 +18,17 @@ node_modules/.bin/knex  migrate:make --migrations-directory ./migrations create_
 
 ### Webhook Subscribe
 
-The app is subscribing itself on startup.  
+The app subscribes itself on startup.  
 It should be provided with 2 env vars:
 
 - `WEBHOOK_DOMAIN`=my.domain.com (use ngrok in dev)
 - `SECRET_WEBHOOK_PATH`=/zR23Q54Ho26q
 
 ### Webhook Info
+
 ```bash
 https://api.telegram.org/botxxxxxxxxxxxxxxx/getWebhookInfo
 ```
-
 
 ### Puppeteer + Heroku
 
