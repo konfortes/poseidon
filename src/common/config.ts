@@ -3,7 +3,7 @@ export default () => ({
   apiToken: process.env.API_TOKEN,
   db: {
     provider: 'pg',
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DB_URL,
   },
   telegram: {
     botToken: process.env.BOT_TOKEN,
