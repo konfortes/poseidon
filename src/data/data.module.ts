@@ -12,7 +12,13 @@ import { UsersStore } from './users.store'
         config: {
           client: configService.get('db.provider'),
           useNullAsDefault: true,
-          connection: configService.get('db.connectionString'),
+          connection: {
+            connectionString:
+              configService.get('db.connectionString') + '?ssl=false',
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          },
         },
       }),
     }),
