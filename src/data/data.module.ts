@@ -13,8 +13,7 @@ import { UsersStore } from './users.store'
           client: configService.get('db.provider'),
           useNullAsDefault: true,
           connection: {
-            connectionString:
-              configService.get('db.connectionString') + '?ssl=false',
+            connectionString: configService.get('db.connectionString'),
             ssl: {
               rejectUnauthorized: false,
             },
