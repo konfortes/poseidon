@@ -14,9 +14,7 @@ import { UsersStore } from './users.store'
           useNullAsDefault: true,
           connection: {
             connectionString: configService.get('db.connectionString'),
-            ssl: {
-              rejectUnauthorized: false,
-            },
+            ssl: true,
           },
         },
       }),
